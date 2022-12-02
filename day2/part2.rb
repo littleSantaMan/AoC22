@@ -51,9 +51,9 @@ STATE_SCORE = {
   win: 6
 }.freeze
 
-results = rounds.map do |round|
-  opp_draw   = TYPE_MAP[round.first] # Rock, Paper, Scissors
-  state_type = STATE_MAP[round.last] # :win, :lose, :draw
+results = rounds.map do |opponent, my_state|
+  opp_draw   = TYPE_MAP[opponent]  # Rock, Paper, Scissors
+  state_type = STATE_MAP[my_state] # :win, :lose, :draw
   my_draw = opp_draw.send state_type
   my_draw.score + STATE_SCORE[state_type]
 end
