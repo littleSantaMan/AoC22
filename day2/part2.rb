@@ -8,25 +8,25 @@ rounds = input.split("\n").map do |row|
   row.split(' ')
 end
 
-class Draw
+class Weapon
   def self.draw; self; end
 end
 
-class Rock < Draw
+class Rock < Weapon
   def self.score; 1; end
 
   def self.win;  Paper;    end # So Paper 'wins' over Rock
   def self.lose; Scissors; end # And Scissors 'lose' over Rock
 end
 
-class Paper < Draw
+class Paper < Weapon
   def self.score; 2; end
 
   def self.win;  Scissors; end
   def self.lose; Rock;     end
 end
 
-class Scissors < Draw
+class Scissors < Weapon
   def self.score; 3; end
 
   def self.win;  Rock;  end
