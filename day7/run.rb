@@ -21,13 +21,13 @@ commands.each do |command|
 end
 
 dirs = {}
-files.each do |file, size|
-  file = file.dup
-  while file.size > 1
-    file.pop
-    file_ = file.dup
-    dirs[file_] ||= 0
-    dirs[file_] += size.to_i
+files.each do |path, size|
+  path = path.dup
+  while path.size.positive?
+    path.pop
+    path_ = path.dup
+    dirs[path_] ||= 0
+    dirs[path_] += size.to_i
   end
 end
 
