@@ -25,8 +25,9 @@ files.each do |file, size|
   file = file.dup
   while file.size > 1
     file.pop
-    dirs[file.dup] ||= 0
-    dirs[file.dup] += size.to_i
+    file_ = file.dup
+    dirs[file_] ||= 0
+    dirs[file_] += size.to_i
   end
 end
 
@@ -45,3 +46,6 @@ candidates = candidates.select do |size|
   size >= to_free_up
 end
 puts candidates.min
+
+# 1844187 p.1
+# 4978279 p.2
