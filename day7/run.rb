@@ -9,14 +9,13 @@ current_folder = ['/']
 files = {}
 
 commands.each do |command|
-  case
-  when match = command.match(/\$ cd (?<folder>.*)/)
-    if match[:folder] == '..'
-      current_folder.pop
-    else
-      current_folder << match[:folder] + '/'
-    end
-  when match = command.match(/(?<size>\d.*) (?<file>.*)/)
+  if match = command.match(/\$ cd (?<folder>.*)/)
+    next current_folder.pop if match[:folder] == '..'
+
+    current_folder << match[:folder]
+  end
+
+  if match = command.match(/(?<size>\d.*) (?<file>.*)/)
     files[current_folder.dup << match[:file]] = match[:size]
   end
 end
@@ -40,7 +39,7 @@ puts result_dirs.values.sum
 
 # PART 2
 
-to_free_up = 30000000 - (70000000 - dirs[['/']])
+to_free_up = 30_000_000 - (70_000_000 - dirs[['/']])
 candidates = dirs.values
 candidates = candidates.select do |size|
   size >= to_free_up
