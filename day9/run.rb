@@ -15,8 +15,8 @@ def adjust(h_pos, t_pos)
   x_diff = h_pos[0] - t_pos[0]
   y_diff = h_pos[1] - t_pos[1]
   pos_diff = [x_diff, y_diff]
-  longer_i = pos_diff.find_index do |x|
-    x.abs == 2
+  longer_i = pos_diff.find_index do |i|
+    i.abs == 2
   end
 
   # validation
