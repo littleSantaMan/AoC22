@@ -65,14 +65,14 @@ def nr_slots(movements, nr_knots)
   knots = nr_knots.times.map do
     [0, 0]
   end
-  t_hist = {}
+  t_hist = { [0, 0] => 1 } # Count TAIL's first position.
 
   track_tail(movements, knots, t_hist)
-  t_hist.size + 1
+  t_hist.size
 end
 
 # PROCESS INPUT ---- START -----
-input = File.read('./ls_input.txt')
+input = File.read('./input.txt')
 
 movements = input.split("\n").flat_map do |row|
   direction, steps = row.split(' ')
@@ -93,6 +93,7 @@ puts nr_slots(movements, 2)
 # PART 2
 puts nr_slots(movements, 10)
 
+# Snowflake inputs:
 # P1: 6391
 # P2: 2593
 
@@ -128,5 +129,6 @@ def print_tail_hist(hist)
 end
 # print_tail_hist(t_hist)
 
-# ls p1: 6340 (too high) --> 6339 worked!
-# ls p2: 2542 (too high) --> 2541 worked!
+# with LittleSanta input:
+# ls p1: 6339
+# ls p2: 2541
