@@ -55,18 +55,35 @@ def adjust(h_pos, t_pos, t_hist = nil)
     x.abs == 2
   end
 
+  longest_i = pos_diff.find_index do |x|
+    x.abs > 2
+  end
+
+  require 'pry'
+  binding.pry if longest_i
+  
+
   return unless longer_i
 
   shortr_i = longer_i == 1 ? 0 : 1
 
   t_pos[longer_i]  = t_pos[longer_i] + pos_diff[longer_i] / 2
-  t_pos[shortr_i]  = t_pos[shortr_i] + pos_diff[shortr_i]
 
+  #binding.pry if 
+  if pos_diff[shortr_i].abs == 2
+
+    t_pos[shortr_i] = t_pos[shortr_i] + (pos_diff[shortr_i] / 2)
+  else
+    t_pos[shortr_i] = t_pos[shortr_i] + pos_diff[shortr_i]
+  end
+  #t_pos[shortr_i] = t_pos[shortr_i] + pos_diff[shortr_i]
+
+  #require 'pry'
+  #binding.pry
   if t_hist
     t_hist[t_pos.dup] ||= 0
     t_hist[t_pos.dup] += 1
   end
-  
 end
 
 h_pos = [0, 0]
