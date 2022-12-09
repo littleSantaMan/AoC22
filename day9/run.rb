@@ -62,7 +62,11 @@ def adjust(h_pos, t_pos, t_hist = nil)
   t_pos[longer_i]  = t_pos[longer_i] + pos_diff[longer_i] / 2
   t_pos[shortr_i]  = t_pos[shortr_i] + pos_diff[shortr_i]
 
-  t_hist[t_pos.dup] ||= 1 if t_hist
+  if t_hist
+    t_hist[t_pos.dup] ||= 0
+    t_hist[t_pos.dup] += 1
+  end
+  
 end
 
 h_pos = [0, 0]
@@ -92,5 +96,24 @@ movements.each do |x_diff, y_diff|
   adjust(pos_8, t_pos, t_hist)
 end
 
-puts t_hist.size + 1 # <- this is wrong
-#puts t_hist
+puts t_hist.size + 1        # unique values
+puts t_hist.values.sum + 1  # non-unique values
+
+# i guessed 2252 (unique) and 2340 (not unique)
+
+# Prints the places where the tail has been.
+def print_(hist)
+  size = 40
+  screen = size.times.map do |_row|
+    Array.new(size, '.')
+  end
+
+  hist.each do |pos|
+    screen[-(pos.first[1]) - size / 2][(pos.first[0]) - size / 2] = '#'
+  end
+  screen[size / 2][size / 2] = 'S'
+  screen.each do |row|
+    print row.join('') + "\n"
+  end
+end
+# print_(t_hist) It shows the correct picture, just like in the example
