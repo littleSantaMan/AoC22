@@ -3,7 +3,7 @@
 require 'yaml'
 require 'pry'
 
-input = File.read('./input.txt')
+input = File.read('./test_input.txt')
 
 alt_map = input.split("\n").map do |row|
   row.scan(/./).map(&:ord)
@@ -22,11 +22,11 @@ alt_map.each_with_index do |row, i|
   row.each_with_index do |el, j|
     if el == 83
       start_pos = [i, j]
-      alt_map[i][j] = 96
+      alt_map[i][j] = 97
     end
     if el == 69
       end_pos = [i, j]
-      alt_map[i][j] = 123  # 97
+      alt_map[i][j] = 123 # 97
     end
   end
 end
@@ -71,17 +71,13 @@ class Path
   def to_a_
     to_a.map { |el| el.pos }
   end
+
+  #def find_el()
 end
 
 class Point
-  attr_accessor :pos, :value, :final, :refs, #, :final
+  attr_accessor :pos, :value, :final,
                 :path
-                #:score, :path
-
-  def tryy
-    binding.pry
-  end
-  #private
 
   def step_options
     @step_options ||= DIRS.map do |diff_v, diff_h| # --> Array<Point> # references
@@ -98,79 +94,9 @@ class Point
                         ALL_POINTS[new_pos]
                       end.compact
   end
-
-  # def has_final?
-  #   @has_final ||= if final
-  #                    return true
-  #                   else
-  #                     refs.any? { |ref| ref.has_final? }
-  #                   end
-  # end
-
-  # def min_size
-  #   #binding.pry
-  #   if final
-  #     return 1
-  #   else
-  #     begin
-  #       return 1 + refs.map { |ref| ref.min_size }.min
-  #     rescue => exception
-  #       binding.pry
-  #     end
-      
-  #   end
-  # end
 end
 
 all_points = {}
-#visited = []
-
-# # gives a new path,
-# def step(path, alt_map, all_points)
-#   current_pos = path.last
-#   return all_points[current_pos].refs if all_points[current_pos]
-
-#   current_val = alt_map[current_pos.first][current_pos.last]
-#   current_point = Point.new
-#   current_point.pos = current_pos
-#   all_points[current_pos] = current_point
-#  #binding.pry  if current_point.pos == [0,0]
-
-#   if current_val == 123
-#     current_point.final = true
-#     return [current_point]
-#   end
-
-#   DIRS.map do |diff_v, diff_h| # --> Array<Point> # references
-#     new_v = current_pos.first + diff_v
-#     new_h = current_pos.last  + diff_h
-    
-#     new_pos = [new_v, new_h]
-#     next if path.include?(new_pos) # || all_paths.any? { |path_| path_.include? new_pos }
-
-#     next all_points[new_pos] if all_points[new_pos]
-#     next unless validate_pos(*new_pos)
-
-#     new_val = alt_map[new_v][new_h]
-#     next unless validate_val(new_val, current_val)
-
-#     new_path = (path.dup << new_pos)
-    
-#     all_points[current_pos].refs += step(new_path, alt_map, all_points).compact
-#     current_point
-#   end
-# end
-
-# def create_point?(pos, alt_map)
-#   next unless validate_pos(*pos)
-
-#   new_val = alt_map[pos.first][pos.last]
-#   next unless validate_val(new_val, current_val)
-# end
-
-#step([start_pos], alt_map, all_points)
-
-
 
 alt_map.each_with_index do |row, i|
   row.each_with_index do |value, j|
@@ -179,40 +105,12 @@ alt_map.each_with_index do |row, i|
     point.pos   = [i, j]
     if value == 123
       point.final = true
-      point.refs = []
     end
     all_points[[i, j]] = point
   end
 end
 
 Point::ALL_POINTS = all_points
-#all_paths = []
-path_costs = {}
-
-# def resolve_refs(point, all_paths, path_costs, path = [])
-#   point.step_options.each do |option|
-#     next if path.include?(option)
-
-#     path_costs[option] ||= path.size
-#     if path.size <= path_costs[option]
-#       path_costs[option] = path.size
-#     else
-#       next
-#     end
-
-#     ref_point = Point::ALL_POINTS[option]
-#     if ref_point.final
-#       binding.pry
-#       all_paths << (path.dup << point.pos)
-#       next
-#     end
-#     resolve_refs(ref_point,all_paths, path_costs, path.dup << point.pos)
-#   end
-# end
-
-#resolve_refs(all_points[[0, 0]], all_paths, path_costs)
-
-#all_points[[0, 0]].score = []
 
 def run(current_points, step)
   current_points.flat_map do |current_point|
@@ -262,6 +160,7 @@ end
 #pathy = all_points[end_pos].path.to_a_
 #print pathy.size - 1
 print all_points[end_pos].path.score
+
 binding.pry
 
 
