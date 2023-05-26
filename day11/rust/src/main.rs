@@ -15,38 +15,44 @@ fn main() {
     let contents: String = fs::read_to_string("../test_input.txt")
         .expect("Should have been able to read the file");
 
-    let monkey_strings: Vec<&str> = contents.split("\n\n").collect();
-    let mut monkeys: Vec<Monkey> = monkey_strings.iter().map( |&monkey_string| { extract_monkey(monkey_string) } ).collect();
+    let monkey_strings:    Vec<&str>     = contents.split("\n\n").collect();
+    let mut monkeys:       Vec<Monkey>   = monkey_strings.iter().map( |&monkey_string| { extract_monkey(monkey_string) } ).collect();
+    let mut monkeys_items: Vec<Vec<i32>> = monkeys.iter().map( |monkey|  { monkey.items.clone() } ).collect();
+    let mut new_monkeys:   Vec<Monkey>   = monkeys.clone();
 
-    let mut new_monkeys: Vec<Monkey> = monkeys.clone();
+    for n in 0..20 {
+        for (i, monkey) in monkeys.iter().enumerate() {
+            let items: Vec<i32> = monkeys_items[i].clone();
+            monkeys_items[i] = vec![];
+            for item in items {
+                let operand: i32;
+                if monkey.operand == "old" {
+                    operand = item;
+                } else {
+                    operand = FromStr::from_str(monkey.operand).unwrap();
+                }
 
-    for i in 0..monkeys.len() {
-        let items: Vec<i32> = new_monkeys[i].items.clone();
-        new_monkeys[i].items = vec![];
-        for item in items {
-            let operand: i32;
-            if monkeys[i].operand == "old" {
-                operand = item;
-            } else {
-                operand = FromStr::from_str(monkeys[i].operand).unwrap();
-            }
+                let new_item: i32;
+                if monkey.operation == "*" {
+                    new_item = item * operand
+                } else {
+                    new_item = item + operand
+                }
 
-            let new_item: i32;
-            if monkeys[i].operation == "*" {
-                new_item = item * operand
-            } else {
-                new_item = item + operand
-            }
-
-            let final_item: i32 = new_item / 3;
-            if final_item % monkeys[i].decision_number == 0 {
-                new_monkeys[monkeys[i].when_true].items.push(final_item)
-            } else {
-                new_monkeys[monkeys[i].when_false].items.push(final_item)
+                let final_item: i32 = new_item / 3;
+                if final_item % monkey.decision_number == 0 {
+                    monkeys_items[monkey.when_true].push(final_item)
+                } else {
+                    monkeys_items[monkey.when_false].push(final_item)
+                }
             }
         }
     }
-    println!("{:?}", new_monkeys[3].items);
+
+    println!("{:?}", monkeys_items[0]);
+    println!("{:?}", monkeys_items[1]);
+    println!("{:?}", monkeys_items[2]);
+    println!("{:?}", monkeys_items[3]);
 }
 
 
